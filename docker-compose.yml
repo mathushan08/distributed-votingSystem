@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: voting
+      POSTGRES_PASSWORD: voting
+      POSTGRES_DB: votingdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - voting-net
+
+  api:
+    build: ./api
+    container_name: api
+    environment:
+      JWT_SECRET: supersecret
+      DATABASE_URL: postgresql://voting:voting@postgres:5432/votingdb
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./api/src:/app/src
+    networks:
+      - voting-net
+
+volumes:
+  db_data:
+
+networks:
+  voting-net:
+    driver: bridge

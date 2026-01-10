@@ -1,0 +1,243 @@
+:root {
+  /* Institutional Palette */
+  --primary: #1E3A8A;
+  /* Deep Blue - Authority */
+  --primary-hover: #172554;
+  --secondary: #F1F5F9;
+  /* Slate 100 - Neutral Backgrounds */
+  --accent: #0EA5E9;
+  /* Sky 500 - Interactions */
+
+  /* Functional Colors */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+
+  /* Neutral Colors */
+  --bg-page: #F8FAFC;
+  /* Slate 50 */
+  --bg-card: #FFFFFF;
+  --text-main: #0F172A;
+  /* Slate 900 */
+  --text-secondary: #475569;
+  /* Slate 600 */
+  --border: #E2E8F0;
+  /* Slate 200 */
+
+  /* Measurements */
+  --radius: 4px;
+  /* Sharp/Technical feel */
+  --header-height: 64px;
+  --sidebar-width: 260px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  /* Typography */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  color: var(--text-main);
+  background-color: var(--bg-page);
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography Scale */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 0.5em 0;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--text-main);
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin: 0 0 1em 0;
+  color: var(--text-secondary);
+}
+
+/* Interactive Elements */
+button {
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--primary);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.025em;
+  /* Slight tracking for authority */
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background-color: white;
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+button.secondary:hover {
+  background-color: var(--secondary);
+  border-color: #CBD5E1;
+}
+
+button.outline {
+  background-color: transparent;
+  color: var(--text-secondary);
+}
+
+button.outline:hover {
+  color: var(--text-main);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Form Elements */
+input,
+select,
+textarea {
+  display: block;
+  width: 100%;
+  padding: 0.625rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  background: white;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 0.375rem;
+}
+
+/* Utility Components */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+}
+
+.card-header {
+  border-bottom: 1px solid var(--secondary);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 99px;
+  background: var(--secondary);
+  color: var(--text-secondary);
+}
+
+.badge.active {
+  background: #DCFCE7;
+  color: #166534;
+}
+
+/* Green-100/700 */
+.badge.sync {
+  background: #DBEAFE;
+  color: #1E40AF;
+}
+
+/* Blue-100/700 */
+.badge.error {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+
+/* Red-100/700 */
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* Layout Helpers */
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
