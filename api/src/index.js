@@ -35,11 +35,26 @@ const requireRole = (role) => {
   };
 };
 
+// -------------------- Chaos Testing --------------------
+app.get("/crash", (req, res) => {
+  console.log("CRASHING NODE BY REQUEST...");
+  // Send response first so the browser doesn't hang forever
+  res.send("Crashing this node... Check logs to see if another takes over!");
+
+  // Suicide in 100ms
+  setTimeout(() => process.exit(1), 100);
+});
+
 // -------------------- Health --------------------
 app.get("/health", async (req, res) => {
   try {
     const r = await pool.query("SELECT 1");
-    res.json({ ok: true, db: "postgres", result: r.rows });
+    // Identify which container this is (hostname is usually container ID)
+    res.json({
+      ok: true,
+      db: "postgres",
+      node: require('os').hostname()
+    });
   } catch (err) {
     console.error("HEALTH CHECK ERROR:", err);
     res.status(500).json({ ok: false, error: "Database unavailable" });
