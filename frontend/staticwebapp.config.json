@@ -1,0 +1,24 @@
+{
+    "navigationFallback": {
+        "rewrite": "/index.html"
+    },
+    "routes": [
+        {
+            "route": "/api/*",
+            "methods": [
+                "OPTIONS",
+                "GET",
+                "HEAD",
+                "POST",
+                "PUT",
+                "DELETE",
+                "TRACE",
+                "CONNECT",
+                "PATCH"
+            ],
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            }
+        }
+    ]
+}

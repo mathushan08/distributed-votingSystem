@@ -12,9 +12,14 @@ const app = express();
 // -------------------- Middleware --------------------
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://ambitious-wave-08f090900.6.azurestaticapps.net", // Your specific frontend
+      process.env.FRONTEND_URL // Future proofing
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
   })
 );
 
