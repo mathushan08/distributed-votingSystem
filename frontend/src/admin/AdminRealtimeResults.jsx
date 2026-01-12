@@ -11,9 +11,7 @@ export default function AdminRealtimeResults({ electionId }) {
 
     const token = localStorage.getItem("token");
 
-    // Use the API URL from environment, or fallback to localhost
     const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
-
     const eventSource = new EventSource(
       `${API_BASE}/elections/${electionId}/results/stream?token=${token}`
     );
