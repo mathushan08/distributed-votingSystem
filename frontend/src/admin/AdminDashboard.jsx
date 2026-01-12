@@ -3,10 +3,9 @@ import { apiFetch } from "../api";
 import AdminRealtimeResults from "./AdminRealtimeResults";
 import CreateElection from "./CreateElection";
 import Layout from "../components/Layout";
-import NodeStatus from "../components/NodeStatus";
 
 export default function AdminDashboard() {
-  const [view, setView] = useState("dashboard"); // dashboard | elections | nodes | logs
+  const [view, setView] = useState("dashboard"); // dashboard | elections | logs
   const [activeTab, setActiveTab] = useState("create"); // for elections view
   const [elections, setElections] = useState([]);
   const [selectedElection, setSelectedElection] = useState("");
@@ -32,51 +31,26 @@ export default function AdminDashboard() {
         return (
           <div className="grid">
             <h2 style={{ borderBottom: "1px solid var(--border)", paddingBottom: "1rem" }}>System Overview</h2>
-            <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "1.5rem" }}>
-              {/* Quick Stats */}
-              <div className="grid" style={{ alignContent: "start" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
-                  <div className="card">
-                    <h3 className="text-secondary text-sm">Active Elections</h3>
-                    <div style={{ fontSize: "2.5rem", fontWeight: 700 }}>{elections.length}</div>
-                  </div>
-                  <div className="card">
-                    <h3 className="text-secondary text-sm">Total Nodes</h3>
-                    <div style={{ fontSize: "2.5rem", fontWeight: 700 }}>3</div>
-                  </div>
-                </div>
-
+            {/* Quick Stats */}
+            <div className="grid" style={{ alignContent: "start" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
                 <div className="card">
-                  <h3>Recent Activity</h3>
-                  <div className="text-sm text-secondary">
-                    <p>• Node-Beta synced successfully (2 mins ago)</p>
-                    <p>• Election "{elections[0]?.title || '...'}" created (1 hour ago)</p>
-                    <p>• System audit complete. Integrity verified.</p>
-                  </div>
+                  <h3 className="text-secondary text-sm">Active Elections</h3>
+                  <div style={{ fontSize: "2.5rem", fontWeight: 700 }}>{elections.length}</div>
+                </div>
+                <div className="card">
+                  <h3 className="text-secondary text-sm">Total Nodes</h3>
+                  <div style={{ fontSize: "2.5rem", fontWeight: 700 }}>3</div>
                 </div>
               </div>
 
-              {/* Node Status Widget */}
-              <div>
-                <NodeStatus />
+              <div className="card">
+                <h3>Recent Activity</h3>
+                <div className="text-sm text-secondary">
+                  <p>• Election "{elections[0]?.title || '...'}" created (1 hour ago)</p>
+                  <p>• System audit complete. Integrity verified.</p>
+                </div>
               </div>
-            </div>
-          </div>
-        );
-
-      case "nodes":
-        return (
-          <div className="grid">
-            <h2 style={{ borderBottom: "1px solid var(--border)", paddingBottom: "1rem" }}>Network Health</h2>
-            <NodeStatus />
-            <div className="card">
-              <h3>Consensus Logs</h3>
-              <pre style={{ fontSize: "0.75rem", background: "var(--secondary)", padding: "1rem", borderRadius: "var(--radius)" }}>
-                {`[INFO] [10:42:01] Block #6204192 finalized. Hash: 0x7f8...
-[INFO] [10:42:05] Node-Alpha broadcasting heartbeat...
-[INFO] [10:42:05] Node-Beta acknowledged.
-[INFO] [10:42:06] Node-Gamma acknowledged.`}
-              </pre>
             </div>
           </div>
         );

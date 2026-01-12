@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiFetch } from "./api";
+import "./Auth.css";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ export default function ForgotPassword() {
                 body: JSON.stringify({ email }),
             });
             setStep(2);
-            setMessage("Reset code sent to your email.");
+            setMessage("Recovery protocol initiated. Check secure inbox for reset token.");
         } catch (err) {
             setError(err.message);
         } finally {
@@ -43,7 +44,7 @@ export default function ForgotPassword() {
                 method: "POST",
                 body: JSON.stringify({ email, otp, new_password: newPassword }),
             });
-            alert("Password reset successfully. Please login.");
+            alert("Security credentials updated. Proceed to authentication.");
             navigate("/login");
         } catch (err) {
             setError(err.message);
@@ -53,92 +54,118 @@ export default function ForgotPassword() {
     };
 
     return (
-        <div style={{
-            maxWidth: "400px",
-            margin: "4rem auto",
-            padding: "2rem",
-            background: "white",
-            borderRadius: "8px",
-            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
-        }}>
-            <h2 style={{ textAlign: "center", marginBottom: "2rem", color: "var(--primary)" }}>
-                Reset Password
-            </h2>
+        <div className="auth-container">
+            <div className="auth-split">
+                {/* Left Panel - Institutional Visuals */}
+                <div className="auth-panel-visual">
+                    <div className="auth-visual-content">
+                        <div className="auth-emblem">
+                            <span className="auth-emblem-icon">⚖️</span>
+                            SECURE VOTE
+                        </div>
+                        <div className="auth-statement">
+                            <h2>Credential Recovery</h2>
+                            <p>
+                                Identity verification is required to reset access keys.
+                                This action is logged and audited for security purposes.
+                            </p>
+                        </div>
+                    </div>
 
-            {error && (
-                <div style={{
-                    padding: "0.75rem",
-                    marginBottom: "1rem",
-                    background: "#fee2e2",
-                    color: "#dc2626",
-                    borderRadius: "4px",
-                    fontSize: "0.9rem"
-                }}>
-                    {error}
+                    <div className="auth-system-status">
+                        <div className="status-item">
+                            <span className="status-dot" style={{ background: "#f59e0b" }}></span>
+                            RECOVERY MODE
+                        </div>
+                        <div className="status-item">
+                            <span>SECURE CHANNEL</span>
+                        </div>
+                    </div>
                 </div>
-            )}
 
-            {message && (
-                <div style={{
-                    padding: "0.75rem",
-                    marginBottom: "1rem",
-                    background: "#dcfce7",
-                    color: "#166534",
-                    borderRadius: "4px",
-                    fontSize: "0.9rem"
-                }}>
-                    {message}
+                {/* Right Panel - Form */}
+                <div className="auth-panel-form">
+                    <div className="auth-form-container">
+                        <div className="auth-intro">
+                            <h1 className="auth-heading">
+                                {step === 1 ? "Reset Access Key" : "Verify & Update"}
+                            </h1>
+                            <p className="auth-subheading">
+                                {step === 1
+                                    ? "Enter your official email to receive a recovery token."
+                                    : "Enter the token and your new secure password."
+                                }
+                            </p>
+                        </div>
+
+                        {error && (
+                            <div className="status-alert">
+                                <strong>ERROR:</strong> {error}
+                            </div>
+                        )}
+
+                        {message && (
+                            <div className="status-alert" style={{ background: "#f0fdf4", borderColor: "#16a34a", color: "#166534" }}>
+                                <strong>STATUS:</strong> {message}
+                            </div>
+                        )}
+
+                        {step === 1 ? (
+                            <form onSubmit={handleSendCode}>
+                                <div className="form-group">
+                                    <label className="form-label">Official Email Address</label>
+                                    <input
+                                        type="email"
+                                        className="form-input"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                        placeholder="name@institution.org"
+                                    />
+                                </div>
+                                <button type="submit" className="btn-submit" disabled={loading}>
+                                    {loading ? "Verifying Identity..." : "Request Reset Token"}
+                                </button>
+                            </form>
+                        ) : (
+                            <form onSubmit={handleResetPassword}>
+                                <div className="form-group">
+                                    <label className="form-label">Recovery Token (OTP)</label>
+                                    <input
+                                        type="text"
+                                        className="form-input"
+                                        value={otp}
+                                        onChange={(e) => setOtp(e.target.value)}
+                                        required
+                                        placeholder="000000"
+                                        maxLength={6}
+                                        style={{ fontFamily: "monospace", letterSpacing: "0.25em", textAlign: "center" }}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">New Access Key</label>
+                                    <input
+                                        type="password"
+                                        className="form-input"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                        required
+                                        placeholder="Min. 8 characters"
+                                    />
+                                </div>
+                                <button type="submit" className="btn-submit" disabled={loading}>
+                                    {loading ? "Updating Credentials..." : "Confirm Update"}
+                                </button>
+                            </form>
+                        )}
+
+                        <div className="auth-links" style={{ justifyContent: "center", marginTop: "2rem" }}>
+                            <Link to="/login" className="link-text">
+                                Cancel & Return to Login
+                            </Link>
+                        </div>
+                    </div>
                 </div>
-            )}
-
-            {step === 1 ? (
-                <form onSubmit={handleSendCode}>
-                    <div style={{ marginBottom: "1rem" }}>
-                        <label style={{ display: "block", marginBottom: "0.5rem" }}>Email Address</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            style={{ width: "100%", padding: "0.5rem" }}
-                        />
-                    </div>
-                    <button type="submit" disabled={loading} style={{ width: "100%" }}>
-                        {loading ? "Sending..." : "Send Reset Code"}
-                    </button>
-                </form>
-            ) : (
-                <form onSubmit={handleResetPassword}>
-                    <div style={{ marginBottom: "1rem" }}>
-                        <label style={{ display: "block", marginBottom: "0.5rem" }}>Reset Code (OTP)</label>
-                        <input
-                            type="text"
-                            value={otp}
-                            onChange={(e) => setOtp(e.target.value)}
-                            required
-                            placeholder="Enter 6-digit code"
-                            style={{ width: "100%", padding: "0.5rem" }}
-                        />
-                    </div>
-                    <div style={{ marginBottom: "1rem" }}>
-                        <label style={{ display: "block", marginBottom: "0.5rem" }}>New Password</label>
-                        <input
-                            type="password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                            placeholder="Min 6 chars"
-                            style={{ width: "100%", padding: "0.5rem" }}
-                        />
-                    </div>
-                    <button type="submit" disabled={loading} style={{ width: "100%" }}>
-                        {loading ? "Reset Password" : "Confirm New Password"}
-                    </button>
-                </form>
-            )}
-
-            <div style={{ marginTop: "1.5rem", textAlign: "center", fontSize: "0.9rem" }}>
-                <Link to="/login" style={{ color: "var(--primary)" }}>Back to Login</Link>
             </div>
         </div>
     );

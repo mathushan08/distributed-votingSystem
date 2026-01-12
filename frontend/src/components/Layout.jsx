@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
+import "./Layout.css";
 
 export default function Layout({ children, role, activePage, onNavigate }) {
     const navigate = useNavigate();
@@ -14,18 +15,13 @@ export default function Layout({ children, role, activePage, onNavigate }) {
 
     if (isAdmin) {
         return (
-            <div style={{ minHeight: "100vh", background: "var(--bg-page)" }}>
+            <div className="admin-layout">
                 <Sidebar
                     activePage={activePage || "dashboard"}
                     onNavigate={onNavigate}
                     onLogout={handleLogout}
                 />
-                <main style={{
-                    marginLeft: "var(--sidebar-width)",
-                    padding: "2rem",
-                    minHeight: "100vh",
-                    boxSizing: "border-box"
-                }}>
+                <main className="admin-main">
                     {children}
                 </main>
             </div>
@@ -34,23 +30,11 @@ export default function Layout({ children, role, activePage, onNavigate }) {
 
     // Voter / Public Layout
     return (
-        <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-            <nav style={{
-                background: "white",
-                borderBottom: "1px solid var(--border)",
-                padding: "0 2rem",
-                height: "var(--header-height)",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                boxShadow: "var(--shadow-sm)"
-            }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                    <div style={{
-                        width: 32, height: 32, background: "var(--primary)", borderRadius: 4,
-                        display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: "bold"
-                    }}>V</div>
-                    <span style={{ fontWeight: 600, fontSize: "1.125rem", color: "var(--primary)" }}>VotingSys</span>
+        <div className="voter-layout">
+            <nav className="voter-nav">
+                <div className="voter-nav-brand">
+                    <div className="brand-icon">⚖️</div>
+                    <span className="brand-text">Secure Vote</span>
 
                     {role && <span className="badge active" style={{ fontSize: "0.75rem" }}>
                         {role} Portal
@@ -59,14 +43,14 @@ export default function Layout({ children, role, activePage, onNavigate }) {
 
                 <div>
                     {role ? (
-                        <button className="outline" onClick={handleLogout}>Logout</button>
+                        <button onClick={handleLogout} className="sign-out-button">Sign Out</button>
                     ) : (
                         <button className="secondary" onClick={() => navigate("/login")}>Login</button>
                     )}
                 </div>
             </nav>
 
-            <main className="container" style={{ flex: 1, marginTop: "2rem" }}>
+            <main className="container voter-main">
                 {children}
             </main>
         </div>

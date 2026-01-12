@@ -1,0 +1,276 @@
+/* Auth.css */
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #ffffff;
+}
+
+/* Split Layout */
+.auth-split {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Left Panel - Institutional/Visual */
+.auth-panel-visual {
+    flex: 1;
+    background-color: #020617;
+    /* Slate 950 - Very Dark Blue */
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Abstract Network Background Pattern */
+.auth-panel-visual::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(30, 58, 138, 0.4) 0%, transparent 20%),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 40px 40px, 40px 40px;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.auth-visual-content {
+    position: relative;
+    z-index: 1;
+}
+
+.auth-emblem {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #ffffff;
+    margin-bottom: 4rem;
+}
+
+.auth-emblem-icon {
+    width: 40px;
+    height: 40px;
+    background: #1e3a8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 1.25rem;
+}
+
+.auth-statement h2 {
+    font-size: 2.5rem;
+    line-height: 1.1;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.auth-statement p {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: #94a3b8;
+    max-width: 500px;
+}
+
+/* System Status Footer */
+.auth-system-status {
+    position: relative;
+    z-index: 1;
+    font-family: 'Courier New', monospace;
+    /* Monospaced for technical feel */
+    font-size: 0.75rem;
+    color: #64748b;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.5rem;
+    display: flex;
+    gap: 2rem;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    /* Green */
+}
+
+/* Right Panel - Form */
+.auth-panel-form {
+    flex: 1;
+    /* Equal split on desktop */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: #ffffff;
+    max-width: 600px;
+    /* Prevent it from getting too wide on huge screens */
+}
+
+.auth-form-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-intro {
+    margin-bottom: 2.5rem;
+}
+
+.auth-heading {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+.auth-subheading {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+/* Form Elements - Detailed & Formal */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 2px;
+    /* Sharper corners */
+    font-size: 0.95rem;
+    color: #0f172a;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #0f172a;
+    /* Dark border on focus */
+    background: #ffffff;
+    box-shadow: 0 0 0 1px #0f172a;
+}
+
+.form-input::placeholder {
+    color: #cbd5e1;
+}
+
+/* Buttons - Heavy & Decisive */
+.btn-submit {
+    width: 100%;
+    padding: 1rem;
+    background: #0f172a;
+    /* Slate 900 */
+    color: white;
+    border: none;
+    border-radius: 2px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 1rem;
+}
+
+.btn-submit:hover {
+    background: #1e293b;
+    /* Slate 800 */
+}
+
+.btn-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.auth-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+}
+
+.link-text {
+    color: #475569;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.link-text:hover {
+    color: #0f172a;
+    text-decoration: underline;
+}
+
+/* Alerts */
+.status-alert {
+    padding: 0.75rem 1rem;
+    background: #fef2f2;
+    border-left: 3px solid #ef4444;
+    color: #991b1b;
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+    .auth-split {
+        flex-direction: column;
+    }
+
+    .auth-panel-visual {
+        min-height: 200px;
+        flex: none;
+        padding: 2rem;
+    }
+
+    .auth-statement,
+    .auth-system-status {
+        display: none;
+        /* Hide extra details on mobile */
+    }
+
+    .auth-emblem {
+        margin-bottom: 0;
+        font-size: 1.5rem;
+    }
+
+    .auth-panel-form {
+        padding: 3rem 1.5rem;
+        flex: 1;
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,103 @@
+/* Layout.css */
+
+/* --- Default (Desktop) Styles --- */
+/* Matches original inline styles */
+
+/* Admin Layout */
+.admin-layout {
+    min-height: 100vh;
+    background: var(--bg-page);
+}
+
+.admin-main {
+    margin-left: var(--sidebar-width);
+    padding: 2rem;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Voter Layout */
+.voter-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.voter-nav {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: var(--header-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.voter-nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.brand-icon {
+    width: 32px;
+    height: 32px;
+    background: #1e3a8a;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.brand-text {
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: #1e3a8a;
+    letter-spacing: -0.02em;
+}
+
+.voter-main {
+    flex: 1;
+    margin-top: 2rem;
+}
+
+
+/* --- Mobile Overrides --- */
+@media (max-width: 768px) {
+
+    /* Voter Nav */
+    .voter-nav {
+        padding: 0 1rem;
+        height: auto;
+        min-height: var(--header-height);
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+
+    .voter-nav-brand {
+        gap: 0.5rem;
+    }
+
+    .brand-text {
+        font-size: 1rem;
+    }
+
+    .voter-main {
+        padding: 1rem;
+        /* Container padding */
+        margin-top: 1rem;
+    }
+
+    /* Admin Sidebar - Simple stacking for now (though likely unused on mobile) */
+    .admin-main {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    /* Note: Sidebar itself needs its own CSS to be responsive, but focusing on Voter per request context */
+}

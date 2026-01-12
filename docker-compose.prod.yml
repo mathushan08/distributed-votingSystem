@@ -1,0 +1,29 @@
+version: "3.9"
+# Updated config
+services:
+  api:
+    image: votingregistry.azurecr.io/voting-api:latest
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+    deploy:
+      replicas: 3
+    networks:
+      - voting-net
+
+  loadbalancer:
+    image: votingregistry.azurecr.io/voting-lb:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - voting-net
+
+networks:
+  voting-net:
+    driver: bridge

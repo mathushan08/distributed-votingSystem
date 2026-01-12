@@ -362,10 +362,17 @@ app.get("/elections/:id/candidates", auth, async (req, res) => {
 // -------------------- Vote --------------------
 app.post("/vote", auth, async (req, res) => {
   const { election_id, candidate_id } = req.body;
+  const client = await pool.connect(); // Acquire a client for transaction
+
   try {
-    // 1. Verify election exists and is active
-    const electionRes = await pool.query("SELECT start_time, end_time FROM elections WHERE id = $1", [election_id]);
+    await client.query('BEGIN'); // Start Transaction
+
+    // 1. Verify election exists and is active (READ lock not strictly needed if we rely on optimistic checks, 
+    // but the transaction ensures we see a consistent snapshot)
+    const electionRes = await client.query("SELECT start_time, end_time FROM elections WHERE id = $1", [election_id]);
+
     if (electionRes.rowCount === 0) {
+      await client.query('ROLLBACK');
       return res.status(404).json({ error: "Election not found" });
     }
 
@@ -373,25 +380,35 @@ app.post("/vote", auth, async (req, res) => {
     const now = new Date();
 
     if (now < new Date(start_time)) {
+      await client.query('ROLLBACK');
       return res.status(400).json({ error: "Election has not started yet" });
     }
     if (now > new Date(end_time)) {
+      await client.query('ROLLBACK');
       return res.status(400).json({ error: "Election has already ended" });
     }
 
     // 2. Cast Vote
-    await pool.query(
+    // We rely on the UNIQUE constraint (voter_id, election_id) to fail this INSERT if a race occurs.
+    // The Transaction ensures that if this succeeds, the checks above were valid relative to this write.
+    await client.query(
       "INSERT INTO votes (id, voter_id, election_id, candidate_id) VALUES ($1, $2, $3, $4)",
       [crypto.randomUUID(), req.user.user_id, election_id, candidate_id]
     );
 
+    await client.query('COMMIT'); // Commit Transaction
     res.json({ success: true });
+
   } catch (err) {
-    if (err.code === '23505') { // Unique violation
+    await client.query('ROLLBACK'); // Rollback on any error
+
+    if (err.code === '23505') { // Unique violation (Race condition caught here)
       return res.status(400).json({ error: "Already voted in this election" });
     }
     console.error("VOTE ERROR:", err);
     res.status(500).json({ error: "Vote failed" });
+  } finally {
+    client.release(); // Return client to pool
   }
 });
 

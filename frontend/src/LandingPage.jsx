@@ -1,59 +1,86 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import "./LandingPage.css";
 
 export default function LandingPage() {
     const navigate = useNavigate();
 
     return (
-        <div style={{
-            minHeight: "100vh",
-            background: "linear-gradient(135deg, var(--bg-page) 0%, #e6f0ff 100%)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-            padding: "2rem"
-        }}>
-            <div style={{ marginBottom: "2rem" }}>
-                <h1 style={{ fontSize: "3.5rem", color: "var(--primary)", marginBottom: "0.5rem" }}>
-                    🗳️ Secure Vote
-                </h1>
-                <p style={{ fontSize: "1.25rem", color: "var(--text-secondary)", maxWidth: "600px" }}>
-                    A secure, distributed voting system for fair and transparent elections.
-                    Manage elections, cast your vote, and view real-time results.
-                </p>
-            </div>
+        <div className="landing-page">
+            {/* Navigation Bar */}
+            <nav className="landing-nav">
+                <div className="nav-logo">
+                    <span className="nav-logo-icon">⚖️</span>
+                    Secure Vote
+                </div>
+                <div className="nav-links">
+                    <button className="nav-link-btn" onClick={() => navigate("/login")}>Login</button>
+                    <button className="nav-cta-btn" onClick={() => navigate("/signup")}>Get Started</button>
+                </div>
+            </nav>
 
-            <div style={{ display: "flex", gap: "1rem" }}>
-                <button
-                    onClick={() => navigate("/login")}
-                    style={{ fontSize: "1.2rem", padding: "0.8em 2em" }}
-                >
-                    Login
-                </button>
-                <button
-                    className="secondary"
-                    onClick={() => navigate("/signup")}
-                    style={{ fontSize: "1.2rem", padding: "0.8em 2em" }}
-                >
-                    Sign Up
-                </button>
-            </div>
+            {/* Hero Section */}
+            <header className="landing-hero">
+                <div className="hero-content">
+                    <h1 className="hero-title">
+                        Safe and Fair Voting for Everyone
+                    </h1>
+                    <p className="hero-subtitle">
+                        We make voting easy, secure, and trustworthy.
+                        Every vote is protected, counted properly, and cannot be changed.
+                        You can vote with confidence knowing the process is transparent and reliable.
+                    </p>
+                    <div className="hero-actions">
+                        <button
+                            className="btn-primary"
+                            onClick={() => navigate("/login")}
+                            aria-label="Access Voting Portal"
+                        >
+                            Start Secure Voting
+                        </button>
+                        <button
+                            className="btn-secondary"
+                            onClick={() => navigate("/signup")}
+                            aria-label="Create Voter Account"
+                        >
+                            Create Account
+                        </button>
+                    </div>
+                </div>
+            </header>
 
-            <div style={{ marginTop: "4rem", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2rem", maxWidth: "900px" }}>
-                <div className="card">
-                    <h3>🔒 Secure</h3>
-                    <p>End-to-end integrity using distributed ledger concepts.</p>
+            {/* Trust Signals / Features Section */}
+            <section className="landing-features">
+                <div className="features-grid">
+                    {/* Security Card */}
+                    <div className="feature-card">
+                        <div className="feature-icon">🔒</div>
+                        <h3>Cryptographic Integrity</h3>
+                        <p>
+                            Every ballot is cryptographically signed and stored on a tamper-resistant distributed ledger, ensuring end-to-end verifiability.
+                        </p>
+                    </div>
+
+                    {/* Transparency Card */}
+                    <div className="feature-card">
+                        <div className="feature-icon">⚡</div>
+                        <h3>Real-Time Transparency</h3>
+                        <p>
+                            Watch election results stream in real-time. Our public verification nodes allow anyone to audit the tallying process instantly.
+                        </p>
+                    </div>
+
+                    {/* Audit Card */}
+                    <div className="feature-card">
+                        <div className="feature-icon">🛡️</div>
+                        <h3>Institutional Grade</h3>
+                        <p>
+                            Built for high-stakes environments with role-based access control, comprehensive audit logs, and verified voter identity.
+                        </p>
+                    </div>
                 </div>
-                <div className="card">
-                    <h3>⚡ Real-time</h3>
-                    <p>Watch election results update live as votes are cast.</p>
-                </div>
-                <div className="card">
-                    <h3>📊 Analytics</h3>
-                    <p>Comprehensive visual breakdown of voting demographics.</p>
-                </div>
-            </div>
+            </section>
         </div>
     );
 }
+

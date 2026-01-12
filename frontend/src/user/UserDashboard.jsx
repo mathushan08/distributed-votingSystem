@@ -3,6 +3,7 @@ import ElectionList from "./ElectionList";
 import ElectionResults from "./ElectionResults";
 import Layout from "../components/Layout";
 import { apiFetch } from "../api";
+import "./VoterPortal.css";
 
 export default function UserDashboard() {
   const [activeTab, setActiveTab] = useState("vote"); // vote | results
@@ -19,31 +20,33 @@ export default function UserDashboard() {
 
   return (
     <Layout role="Voter">
-      <div className="flex gap-4" style={{ marginBottom: "2rem" }}>
+      <div className="vp-header">
+        <h1 className="vp-title">Voter Command Center</h1>
+
+      </div>
+
+      <div className="vp-tabs">
         <button
-          className={activeTab === "vote" ? "" : "outline"}
+          className={`vp-tab ${activeTab === "vote" ? "active" : ""}`}
           onClick={() => setActiveTab("vote")}
         >
-          Active Elections
+          Official Ballots
         </button>
         <button
-          className={activeTab === "results" ? "" : "outline"}
+          className={`vp-tab ${activeTab === "results" ? "active" : ""}`}
           onClick={() => setActiveTab("results")}
         >
-          Past Results
+          Election Results
         </button>
       </div>
 
       {activeTab === "vote" ? (
         <ElectionList />
       ) : (
-        <div className="grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "2rem" }}>
-          {pastElections.length === 0 && <p>No past elections.</p>}
+        <div style={{ display: "grid", gap: "2rem" }}>
+          {pastElections.length === 0 && <p style={{ color: "#64748b" }}>No election records found.</p>}
           {pastElections.map(e => (
-            <div key={e.id} className="card">
-              <h3>{e.title}</h3>
-              <ElectionResults electionId={e.id} endTime={e.end_time} />
-            </div>
+            <ElectionResults key={e.id} electionId={e.id} endTime={e.end_time} title={e.title} />
           ))}
         </div>
       )}

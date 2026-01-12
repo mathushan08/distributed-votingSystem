@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../api";
 import Modal from "../components/Modal";
+import "./VoterPortal.css";
 
 export default function ElectionList() {
   const navigate = useNavigate();
@@ -11,6 +12,14 @@ export default function ElectionList() {
   const [selectedElection, setSelectedElection] = useState(null);
   const [candidateId, setCandidateId] = useState(null);
   const [error, setError] = useState("");
+
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // 🕒 Live status updates
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // 🔒 Auth guard + load elections
   useEffect(() => {
@@ -49,7 +58,6 @@ export default function ElectionList() {
   const handleVote = async () => {
     if (!candidateId) return;
 
-    // ... logic 
     try {
       await apiFetch("/vote", {
         method: "POST",
@@ -67,13 +75,11 @@ export default function ElectionList() {
       setCandidateId(null);
       setSelectedElection(null);
       setShowConfirm(false);
-      // Show success toast or modal ideally, but alert is fine for success state for now or small notification
-      // Let's use a simple success state in the UI if possible, but for now just clear it.
-      alert("✅ Vote successfully recorded on the ledger.");
+      alert("✅ Vote successfully recorded and cryptographically signed.");
     } catch (e) {
       let msg = e.message;
       if (msg.includes("Already voted") || msg.includes("400")) {
-        msg = "⚠️ You have already voted in this election.";
+        msg = "⚠️ Vote Rejected: A ballot has already been submitted for this ID.";
       }
       alert(msg);
       setShowConfirm(false);
@@ -84,94 +90,99 @@ export default function ElectionList() {
 
   return (
     <div>
-      <h2 style={{ marginTop: 0 }}>Active Elections</h2>
-      <p style={{ color: "var(--text-secondary)", marginBottom: "2rem" }}>Select a ballot to cast your vote.</p>
+      {error && <div className="status-alert">{error}</div>}
 
-      {error && <div style={{
-        padding: "1rem",
-        background: "#fee2e2",
-        color: "#dc2626",
-        borderRadius: "var(--radius)",
-        marginBottom: "1rem"
-      }}>{error}</div>}
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1.5rem" }}>
+      <div style={{ display: "grid", gap: "1.5rem" }}>
         {elections.map(e => {
-          const now = new Date();
           const start = new Date(e.start_time);
           const end = new Date(e.end_time);
-          const isEnded = now > end;
-          const isUpcoming = now < start;
+          const isEnded = currentTime > end;
+          const isUpcoming = currentTime < start;
           const isVoted = e.has_voted;
           const isActive = !isEnded && !isUpcoming && !isVoted;
 
+          let statusClass = "vp-card";
+          if (isEnded) statusClass += " ended";
+          else if (isVoted) statusClass += " voted";
+          else if (isUpcoming) statusClass += " upcoming";
+          else statusClass += " active";
+
           return (
-            <div key={e.id} className="card" style={{
-              border: selectedElection === e.id ? "2px solid var(--primary)" : "1px solid var(--border)",
-              cursor: (isEnded || isVoted) ? "not-allowed" : "pointer",
-              transition: "all 0.2s",
-              opacity: (isEnded || isVoted) ? 0.7 : 1,
-              background: (isEnded || isVoted) ? "var(--bg-page)" : "white"
-            }} onClick={() => !isEnded && !isVoted && loadCandidates(e.id)}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "0.5rem" }}>
-                <h3 style={{ fontSize: "1.25rem", margin: 0 }}>{e.title}</h3>
-                {isEnded && <span className="badge error">Ended</span>}
-                {isVoted && <span className="badge success">Voted</span>}
-                {isUpcoming && <span className="badge sync">Upcoming</span>}
-                {isActive && <span className="badge active">Active</span>}
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", fontSize: "0.9em", color: "var(--text-secondary)" }}>
+            <div key={e.id} className={statusClass}>
+              <div className="vp-card-header">
                 <div>
-                  <div style={{ fontWeight: 600, fontSize: "0.75rem", textTransform: "uppercase" }}>Starts</div>
-                  <div>{start.toLocaleDateString()}</div>
-                  <div style={{ fontSize: "0.85em" }}>{start.toLocaleTimeString()}</div>
+                  <div style={{ fontSize: "0.7rem", textTransform: "uppercase", color: "#64748b", fontWeight: 700, marginBottom: "0.25rem" }}>
+                    Election ID: {e.id.substring(0, 8).toUpperCase()}
+                  </div>
+                  <h3 className="vp-card-title">{e.title}</h3>
                 </div>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontWeight: 600, fontSize: "0.75rem", textTransform: "uppercase" }}>Ends</div>
-                  <div>{end.toLocaleDateString()}</div>
-                  <div style={{ fontSize: "0.85em" }}>{end.toLocaleTimeString()}</div>
-                </div>
+
+                {isEnded && <span className="vp-status vp-status-ended">Closed</span>}
+                {isVoted && <span className="vp-status vp-status-voted">Vote Cast</span>}
+                {isUpcoming && <span className="vp-status vp-status-upcoming">Scheduled</span>}
+                {isActive && <span className="vp-status vp-status-active">Ballot Open</span>}
               </div>
 
-              {/* Show candidates inside the card if selected */}
-              {selectedElection === e.id && (
-                <div style={{ marginTop: "1.5rem", borderTop: "1px solid var(--border)", paddingTop: "1rem" }} onClick={e => e.stopPropagation()}>
-                  <h4 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>Select Candidate:</h4>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                    {candidates.map(c => (
-                      <label key={c.id} style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                        padding: "0.5rem",
-                        borderRadius: "var(--radius)",
-                        background: candidateId === c.id ? "var(--secondary)" : "transparent",
-                        cursor: "pointer"
-                      }}>
-                        <input
-                          type="radio"
-                          name="candidate"
-                          checked={candidateId === c.id}
-                          onChange={() => setCandidateId(c.id)}
-                          style={{ width: "auto", margin: 0 }}
-                        />
-                        {c.name}
-                        {c.party && <span style={{ fontSize: "0.8em", color: "var(--text-secondary)" }}>({c.party})</span>}
-                      </label>
-                    ))}
+              <div className="vp-card-body">
+                <div className="vp-meta-grid">
+                  <div>
+                    <span className="vp-meta-label">Start Time</span>
+                    <div className="vp-meta-value">{start.toLocaleString()}</div>
                   </div>
-
-                  <div style={{ marginTop: "1rem", display: "flex", gap: "0.5rem" }}>
-                    <button onClick={confirmVote} disabled={!candidateId} style={{ flex: 1, opacity: !candidateId ? 0.6 : 1 }}>
-                      Proceed to Vote
-                    </button>
-                    <button className="outline" onClick={() => setSelectedElection(null)} style={{ flex: 1 }}>
-                      Cancel
-                    </button>
+                  <div>
+                    <span className="vp-meta-label">End Time</span>
+                    <div className="vp-meta-value">{end.toLocaleString()}</div>
                   </div>
                 </div>
-              )}
+
+                {!isEnded && !isVoted && !selectedElection && isUpcoming === false && (
+                  <button className="vp-btn vp-btn-primary" onClick={() => loadCandidates(e.id)}>
+                    Access Official Ballot
+                  </button>
+                )}
+
+                {/* Inline Ballot Interface */}
+                {selectedElection === e.id && (
+                  <div style={{ marginTop: "1.5rem", borderTop: "1px dashed #cbd5e1", paddingTop: "1.5rem" }}>
+                    <h4 style={{ fontSize: "0.9rem", textTransform: "uppercase", color: "#0f172a", marginBottom: "1rem" }}>
+                      Select Candidate
+                    </h4>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginBottom: "1.5rem" }}>
+                      {candidates.map(c => (
+                        <label key={c.id} style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "1rem",
+                          padding: "0.75rem 1rem",
+                          border: candidateId === c.id ? "1px solid #1e3a8a" : "1px solid #e2e8f0",
+                          borderRadius: "4px",
+                          background: candidateId === c.id ? "#eff6ff" : "white",
+                          cursor: "pointer",
+                          transition: "all 0.2s"
+                        }}>
+                          <input
+                            type="radio"
+                            name="candidate"
+                            checked={candidateId === c.id}
+                            onChange={() => setCandidateId(c.id)}
+                            style={{ margin: 0, width: "1.25em", height: "1.25em" }}
+                          />
+                          <span style={{ fontWeight: 500, color: "#0f172a" }}>{c.name}</span>
+                        </label>
+                      ))}
+                    </div>
+
+                    <div style={{ display: "flex", gap: "1rem" }}>
+                      <button className="vp-btn vp-btn-primary" onClick={confirmVote} disabled={!candidateId}>
+                        Sign & Submit Vote
+                      </button>
+                      <button className="vp-btn vp-btn-outline" onClick={() => setSelectedElection(null)}>
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           );
         })}
@@ -180,21 +191,36 @@ export default function ElectionList() {
       <Modal
         isOpen={showConfirm}
         onClose={() => setShowConfirm(false)}
-        title="Confirm Your Vote"
+        title="Confirm Ballot Submission"
         actions={
           <>
-            <button className="outline" onClick={() => setShowConfirm(false)}>Cancel</button>
-            <button onClick={handleVote}>Confirm & Cast Vote</button>
+            <button className="vp-btn vp-btn-outline" onClick={() => setShowConfirm(false)}>Review</button>
+            <button className="vp-btn vp-btn-primary" onClick={handleVote}>Confirm & Cast Vote</button>
           </>
         }
       >
-        <div style={{ textAlign: "center" }}>
-          <p>You are about to cast your vote for:</p>
-          <h3 style={{ fontSize: "1.5rem", color: "var(--primary)", margin: "1rem 0" }}>
-            {getCandidateName(candidateId)}
-          </h3>
-          <div className="badge warning" style={{ fontSize: "0.85rem", padding: "0.5rem 1rem" }}>
-            ⚠️ This action cannot be undone.
+        <div style={{ textAlign: "center", padding: "1rem 0" }}>
+          <p style={{ color: "#64748b", marginBottom: "1rem" }}>You are about to cryptographically sign and submit your vote for:</p>
+          <div style={{
+            background: "#f8fafc",
+            padding: "1rem",
+            border: "1px solid #e2e8f0",
+            borderRadius: "4px",
+            marginBottom: "1.5rem"
+          }}>
+            <h3 style={{ fontSize: "1.25rem", color: "#0f172a", margin: 0 }}>
+              {getCandidateName(candidateId)}
+            </h3>
+          </div>
+          <div style={{
+            fontSize: "0.85rem",
+            color: "#b45309",
+            background: "#fffbeb",
+            padding: "0.5rem",
+            borderRadius: "2px",
+            border: "1px solid #fde68a"
+          }}>
+            ⚠️ Warning: Blockchain transactions are immutable. This action cannot be undone.
           </div>
         </div>
       </Modal>

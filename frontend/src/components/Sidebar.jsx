@@ -6,8 +6,7 @@ export default function Sidebar({ activePage, onNavigate, onLogout }) {
     const menu = [
         { id: "dashboard", label: "Dashboard", icon: "📊" },
         { id: "elections", label: "Elections", icon: "🗳️" },
-        { id: "nodes", label: "Node Health", icon: "🔗" },
-        { id: "logs", label: "Audit Logs", icon: "📜" },
+
     ];
 
     return (
@@ -29,10 +28,10 @@ export default function Sidebar({ activePage, onNavigate, onLogout }) {
                 borderBottom: "1px solid var(--border)"
             }}>
                 <div style={{
-                    width: 32, height: 32, background: "var(--primary)", borderRadius: 4, marginRight: "0.75rem",
-                    display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: "bold"
-                }}>V</div>
-                <span style={{ fontWeight: 600, fontSize: "1.125rem", color: "var(--primary)" }}>VotingSys</span>
+                    width: 32, height: 32, background: "#1e3a8a", borderRadius: 4, marginRight: "0.75rem",
+                    display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: "1.2rem"
+                }}>⚖️</div>
+                <span style={{ fontWeight: 700, fontSize: "1.125rem", color: "#1e3a8a", letterSpacing: "-0.02em" }}>Secure Vote</span>
             </div>
 
             <nav style={{ padding: "1.5rem 1rem", flex: 1 }}>
@@ -60,8 +59,17 @@ export default function Sidebar({ activePage, onNavigate, onLogout }) {
             </nav>
 
             <div style={{ padding: "1rem", borderTop: "1px solid var(--border)" }}>
-                <button className="outline" onClick={onLogout} style={{ width: "100%", justifyContent: "flex-start" }}>
-                    <span style={{ marginRight: "0.75rem" }}>🚪</span> Logout
+                <button onClick={onLogout} style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    background: "#fee2e2",
+                    color: "#991b1b",
+                    border: "1px solid #fecaca",
+                    fontWeight: 600
+                }}>
+                    <span style={{ marginRight: "0.75rem" }}>🚪</span> Sign Out
                 </button>
             </div>
         </div>
