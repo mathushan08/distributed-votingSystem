@@ -55,7 +55,7 @@ export default function Signup({ onSwitchToLogin }) {
         <div className="auth-panel-visual">
           <div className="auth-visual-content">
             <div className="auth-emblem">
-              <span className="auth-emblem-icon">⚖️</span>
+              <span className="auth-emblem-icon"></span>
               SECURE VOTE
             </div>
             <div className="auth-statement">
@@ -93,7 +93,7 @@ export default function Signup({ onSwitchToLogin }) {
               </p>
             </div>
 
-            {error && <div className="status-alert">⚠️ {error}</div>}
+            {error && <div className="status-alert">{error}</div>}
 
             {step === 1 ? (
               <form onSubmit={register}>

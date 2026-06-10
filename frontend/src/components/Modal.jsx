@@ -27,7 +27,7 @@ export default function Modal({ isOpen, onClose, title, children, actions }) {
                     <h3 style={{ margin: 0, fontSize: "1.125rem" }}>{title}</h3>
                     <button onClick={onClose} style={{
                         background: "transparent", border: "none", color: "var(--text-secondary)", padding: 0
-                    }}>✕</button>
+                    }}></button>
                 </div>
 
                 <div style={{ padding: "1.5rem" }}>

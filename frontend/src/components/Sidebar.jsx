@@ -4,8 +4,8 @@ export default function Sidebar({ activePage, onNavigate, onLogout }) {
     const navigate = useNavigate();
 
     const menu = [
-        { id: "dashboard", label: "Dashboard", icon: "📊" },
-        { id: "elections", label: "Elections", icon: "🗳️" },
+        { id: "dashboard", label: "Dashboard", icon: "" },
+        { id: "elections", label: "Elections", icon: "" },
 
     ];
 
@@ -30,7 +30,7 @@ export default function Sidebar({ activePage, onNavigate, onLogout }) {
                 <div style={{
                     width: 32, height: 32, background: "#1e3a8a", borderRadius: 4, marginRight: "0.75rem",
                     display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: "1.2rem"
-                }}>⚖️</div>
+                }}></div>
                 <span style={{ fontWeight: 700, fontSize: "1.125rem", color: "#1e3a8a", letterSpacing: "-0.02em" }}>Secure Vote</span>
             </div>
 
@@ -69,7 +69,7 @@ export default function Sidebar({ activePage, onNavigate, onLogout }) {
                     border: "1px solid #fecaca",
                     fontWeight: 600
                 }}>
-                    <span style={{ marginRight: "0.75rem" }}>🚪</span> Sign Out
+                    <span style={{ marginRight: "0.75rem" }}></span> Sign Out
                 </button>
             </div>
         </div>

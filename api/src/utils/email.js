@@ -18,7 +18,7 @@ const createTransporter = async () => {
     // Fallback to Ethereal for testing
     const testAccount = await nodemailer.createTestAccount();
     console.log("-----------------------------------------");
-    console.log("⚠️ USING TEST EMAIL ACCOUNT (ETHEREAL) ⚠️");
+    console.log("USING TEST EMAIL ACCOUNT (ETHEREAL)");
     console.log("User:", testAccount.user);
     console.log("Pass:", testAccount.pass);
     console.log("-----------------------------------------");

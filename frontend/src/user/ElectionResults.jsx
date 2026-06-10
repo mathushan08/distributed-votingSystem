@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { API_BASE } from "../api";
 import "./VoterPortal.css";
 
 const COLORS = ["#2563eb", "#16a34a", "#ea580c", "#9333ea", "#0891b2", "#dc2626", "#ca8a04"];
@@ -47,7 +48,7 @@ export default function ElectionResults({ electionId, endTime, title }) {
         setLoading(true);
         const token = localStorage.getItem("token");
         const eventSource = new EventSource(
-            `http://localhost:3000/elections/${electionId}/results/stream?token=${token}`
+            `${API_BASE}/elections/${electionId}/results/stream?token=${token}`
         );
 
         eventSource.onmessage = (event) => {
@@ -182,7 +183,7 @@ export default function ElectionResults({ electionId, endTime, title }) {
                         </table>
 
                         <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid #e2e8f0", fontSize: "0.75rem", color: "#94a3b8", display: "flex", gap: "1rem", alignItems: "center" }}>
-                            <span>🔒 verification_hash: {Math.random().toString(36).substring(7)}...</span>
+                            <span> verification_hash: {Math.random().toString(36).substring(7)}...</span>
                             <span style={{ marginLeft: "auto" }}>Status: <span style={{ color: "#059669", fontWeight: 600 }}>VERIFIED</span></span>
                         </div>
                     </div>

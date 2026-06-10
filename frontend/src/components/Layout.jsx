@@ -33,7 +33,7 @@ export default function Layout({ children, role, activePage, onNavigate }) {
         <div className="voter-layout">
             <nav className="voter-nav">
                 <div className="voter-nav-brand">
-                    <div className="brand-icon">⚖️</div>
+                    <div className="brand-icon"></div>
                     <span className="brand-text">Secure Vote</span>
 
                     {role && <span className="badge active" style={{ fontSize: "0.75rem" }}>

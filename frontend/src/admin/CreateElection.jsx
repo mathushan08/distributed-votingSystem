@@ -147,7 +147,7 @@ export default function CreateElection() {
         </div>
 
         <button onClick={create} style={{ marginTop: "1rem", padding: "0.8em" }}>
-          🚀 Launch Election
+           Launch Election
         </button>
       </div>
     </div>

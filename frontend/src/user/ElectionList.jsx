@@ -15,13 +15,13 @@ export default function ElectionList() {
 
   const [currentTime, setCurrentTime] = useState(new Date());
 
-  // 🕒 Live status updates
+  //  Live status updates
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // 🔒 Auth guard + load elections
+  //  Auth guard + load elections
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -75,11 +75,11 @@ export default function ElectionList() {
       setCandidateId(null);
       setSelectedElection(null);
       setShowConfirm(false);
-      alert("✅ Vote successfully recorded and cryptographically signed.");
+      alert(" Vote successfully recorded and cryptographically signed.");
     } catch (e) {
       let msg = e.message;
       if (msg.includes("Already voted") || msg.includes("400")) {
-        msg = "⚠️ Vote Rejected: A ballot has already been submitted for this ID.";
+        msg = "Vote Rejected: A ballot has already been submitted for this ID.";
       }
       alert(msg);
       setShowConfirm(false);
@@ -220,7 +220,7 @@ export default function ElectionList() {
             borderRadius: "2px",
             border: "1px solid #fde68a"
           }}>
-            ⚠️ Warning: Blockchain transactions are immutable. This action cannot be undone.
+            Warning: Blockchain transactions are immutable. This action cannot be undone.
           </div>
         </div>
       </Modal>

@@ -140,7 +140,7 @@ export default function AdminDashboard() {
                                 background: "#FEE2E2", color: "#991B1B", border: "none", padding: "0.4rem 0.8rem", borderRadius: "4px"
                               }}
                             >
-                              🗑️ Delete
+                              Delete
                             </button>
                           </td>
                         </tr>

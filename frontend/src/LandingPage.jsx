@@ -10,7 +10,7 @@ export default function LandingPage() {
             {/* Navigation Bar */}
             <nav className="landing-nav">
                 <div className="nav-logo">
-                    <span className="nav-logo-icon">⚖️</span>
+                    <span className="nav-logo-icon"></span>
                     Secure Vote
                 </div>
                 <div className="nav-links">
@@ -54,7 +54,7 @@ export default function LandingPage() {
                 <div className="features-grid">
                     {/* Security Card */}
                     <div className="feature-card">
-                        <div className="feature-icon">🔒</div>
+                        <div className="feature-icon"></div>
                         <h3>Cryptographic Integrity</h3>
                         <p>
                             Every ballot is cryptographically signed and stored on a tamper-resistant distributed ledger, ensuring end-to-end verifiability.
@@ -63,7 +63,7 @@ export default function LandingPage() {
 
                     {/* Transparency Card */}
                     <div className="feature-card">
-                        <div className="feature-icon">⚡</div>
+                        <div className="feature-icon"></div>
                         <h3>Real-Time Transparency</h3>
                         <p>
                             Watch election results stream in real-time. Our public verification nodes allow anyone to audit the tallying process instantly.
@@ -72,7 +72,7 @@ export default function LandingPage() {
 
                     {/* Audit Card */}
                     <div className="feature-card">
-                        <div className="feature-icon">🛡️</div>
+                        <div className="feature-icon"></div>
                         <h3>Institutional Grade</h3>
                         <p>
                             Built for high-stakes environments with role-based access control, comprehensive audit logs, and verified voter identity.

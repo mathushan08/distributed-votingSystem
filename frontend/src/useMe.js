@@ -6,7 +6,7 @@ export const useMe = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!token) return; // 🔴 DO NOT call /me without token
+    if (!token) return; //  DO NOT call /me without token
 
     apiFetch("/me")
       .then(setUser)
